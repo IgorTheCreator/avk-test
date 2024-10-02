@@ -1,7 +1,8 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, Global, Module } from '@nestjs/common';
 import { FirstService } from './first.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
+@Global()
 @Module({
   providers: [FirstService],
 })
@@ -16,7 +17,7 @@ export class FirstModule {
         },
         FirstService,
       ],
-      exports: [FirstService],
+      exports: ['FIRST_NUMBER', FirstService],
     };
   }
 
@@ -35,6 +36,20 @@ export class FirstModule {
         FirstService,
       ],
       exports: ['FIRST_NUMBER', FirstService],
+    };
+  }
+
+  static forFeature(secondNumber: number): DynamicModule {
+    return {
+      module: FirstModule,
+      providers: [
+        {
+          provide: 'SECOND_NUMBER',
+          useValue: secondNumber,
+        },
+        FirstService,
+      ],
+      exports: ['SECOND_NUMBER', FirstService],
     };
   }
 }
