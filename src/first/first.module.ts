@@ -52,4 +52,22 @@ export class FirstModule {
       exports: ['SECOND_NUMBER', FirstService],
     };
   }
+
+  static forFeatureAsync(): DynamicModule {
+    return {
+      module: FirstModule,
+      imports: [ConfigModule.forRoot()],
+      providers: [
+        {
+          provide: 'SECOND_NUMBER',
+          useFactory: async (configService: ConfigService) => {
+            return configService.get<number>('SECOND_NUMBER', 10);
+          },
+          inject: [ConfigService],
+        },
+        FirstService,
+      ],
+      exports: ['SECOND_NUMBER', FirstService],
+    };
+  }
 }

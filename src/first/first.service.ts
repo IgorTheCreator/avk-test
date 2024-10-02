@@ -16,6 +16,6 @@ export class FirstService {
   }
 
   sum(): number {
-    return this.firstNumber + this.secondNumber;
+    return Number(this.firstNumber) + Number(this.secondNumber);
   }
 }
